@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	"crypto/tls"
+	"crypto/x509"
+	_ "embed"
 	"encoding/xml"
 	"errors"
 	"fmt"
@@ -12,6 +14,13 @@ import (
 	"net/http"
 	"time"
 )
+
+// Braintree certificate pulled from
+// https://raw.githubusercontent.com/braintree/braintree_ruby/b711fb4e69a871066f9946ce17dbbafb40a66c97/lib/ssl/api_braintreegateway_com.ca.crt
+// On April 18, 2025
+//
+//go:embed ssl/api_braintreegateway_com.ca.crt
+var braintreeRootCertificate []byte
 
 type apiVersion int
 
@@ -41,10 +50,22 @@ var (
 		},
 	}
 	defaultClient = &http.Client{
-		Timeout:   defaultTimeout,
-		Transport: defaultTransport,
+		Timeout: defaultTimeout,
 	}
 )
+
+func init() {
+	// Use Braintree's root certificate as the only certificate in the HTTP client
+	rootCAs := x509.NewCertPool()
+	if ok := rootCAs.AppendCertsFromPEM(braintreeRootCertificate); !ok {
+		log.Fatal("braintree-go: Could not use Braintree root certificate")
+	}
+
+	// Trust the updated certificate pool in the default HTTP client
+	transport := defaultTransport
+	transport.TLSClientConfig.RootCAs = rootCAs
+	defaultClient.Transport = transport
+}
 
 // New creates a Braintree client with API Keys.
 func New(env Environment, merchId, pubKey, privKey string) *Braintree {

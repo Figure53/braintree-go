@@ -4,6 +4,10 @@ import "strconv"
 
 type ProcessorResponseCode int
 
+const (
+	ProcessorResponseCodeCardIssuerDeclinedCVV ProcessorResponseCode = 2010
+)
+
 func (rc ProcessorResponseCode) Int() int {
 	return int(rc)
 }

@@ -429,7 +429,7 @@ func TestTransactionCreateWhenGatewayRejected(t *testing.T) {
 	if err.Error() != "Card Issuer Declined CVV" {
 		t.Fatal(err)
 	}
-	if err.(*BraintreeError).Transaction.ProcessorResponseCode != 2010 {
+	if err.(*BraintreeError).Transaction.ProcessorResponseCode != ProcessorResponseCodeCardIssuerDeclinedCVV {
 		t.Fatalf("expected err.Transaction.ProcessorResponseCode to be 2010, but got %d", err.(*BraintreeError).Transaction.ProcessorResponseCode)
 	}
 	if err.(*BraintreeError).Transaction.ProcessorResponseType != ProcessorResponseTypeHardDeclined {
@@ -468,7 +468,7 @@ func TestTransactionCreateWhenGatewayRejectedFraud(t *testing.T) {
 		t.Fatalf("Got gateway rejection reason %q, wanted ''", txn.GatewayRejectionReason)
 	}
 
-	if txn.ProcessorResponseCode != 0 {
+	if txn.ProcessorResponseCode != ProcessorResponseCodeCardIssuerDeclinedCVV {
 		t.Fatalf("Got processor response code %q, want %q", txn.ProcessorResponseCode, 0)
 	}
 }
@@ -989,6 +989,9 @@ func TestAllTransactionFields(t *testing.T) {
 	}
 	if tx2.Customer.Id == "" {
 		t.Fatalf("expected Customer.Id to be equal, but %s was not %s", tx2.Customer.Id, tx.Customer.ID)
+	}
+	if tx2.Customer.GraphQLId == "" {
+		t.Fatalf("expected Customer.GraphQLId to be equal, but %s was empty", tx2.Customer.GraphQLId)
 	}
 	if tx2.Status != TransactionStatusSubmittedForSettlement {
 		t.Fatalf("expected tx2.Status to be %s, but got %s", TransactionStatusSubmittedForSettlement, tx2.Status)

@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/braintree-go/braintree-go/testhelpers"
+	"github.com/Figure53/braintree-go/testhelpers"
 )
 
 const (

@@ -11,7 +11,7 @@ import (
 
 	"time"
 
-	"github.com/braintree-go/braintree-go/testhelpers"
+	"github.com/Figure53/braintree-go/testhelpers"
 )
 
 func TestCreditCard(t *testing.T) {

@@ -1,3 +1,18 @@
+## 0.23.0 (April 18, 2025)
+
+IMPROVEMENTS:
+
+* Default HTTP client now uses Braintree root certificate
+* Added GraphQLId to Transaction and Customer.
+
+DEPRECATED:
+
+* Venmo Credit Card SDK
+
+BACKWARDS INCOMPATIBILITES:
+
+* Move package from github.com/braintree-go/braintree-go to github.com/Figure53/braintree-go.
+
 ## 0.22.0 (November 19th, 2018)
 
 IMPROVEMENTS:

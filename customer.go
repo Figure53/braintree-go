@@ -3,7 +3,7 @@ package braintree
 import (
 	"time"
 
-	"github.com/braintree-go/braintree-go/customfields"
+	"github.com/Figure53/braintree-go/customfields"
 )
 
 type Customer struct {

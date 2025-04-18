@@ -8,7 +8,7 @@ import (
 	"encoding/xml"
 	"testing"
 
-	"github.com/braintree-go/braintree-go/testhelpers"
+	"github.com/Figure53/braintree-go/testhelpers"
 )
 
 func TestMerchantAccountCreate(t *testing.T) {

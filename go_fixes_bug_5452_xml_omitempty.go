@@ -1,3 +1,4 @@
+//go:build !go1.8
 // +build !go1.8
 
 package braintree
@@ -19,7 +20,6 @@ func (cco *CreditCardOptions) MarshalXML(e *xml.Encoder, start xml.StartElement)
 	if cco.VerifyCard == nil {
 		type excludeVerifyCard struct {
 			VerifyCard                    *bool  `xml:"-"`
-			VenmoSDKSession               string `xml:"venmo-sdk-session,omitempty"`
 			MakeDefault                   bool   `xml:"make-default,omitempty"`
 			FailOnDuplicatePaymentMethod  bool   `xml:"fail-on-duplicate-payment-method,omitempty"`
 			VerificationMerchantAccountId string `xml:"verification-merchant-account-id,omitempty"`
@@ -28,7 +28,6 @@ func (cco *CreditCardOptions) MarshalXML(e *xml.Encoder, start xml.StartElement)
 		return e.EncodeElement(
 			excludeVerifyCard{
 				VerifyCard:                    cco.VerifyCard,
-				VenmoSDKSession:               cco.VenmoSDKSession,
 				MakeDefault:                   cco.MakeDefault,
 				FailOnDuplicatePaymentMethod:  cco.FailOnDuplicatePaymentMethod,
 				VerificationMerchantAccountId: cco.VerificationMerchantAccountId,
@@ -39,7 +38,6 @@ func (cco *CreditCardOptions) MarshalXML(e *xml.Encoder, start xml.StartElement)
 	} else {
 		type includeVerifyCard struct {
 			VerifyCard                    *bool  `xml:"verify-card"`
-			VenmoSDKSession               string `xml:"venmo-sdk-session,omitempty"`
 			MakeDefault                   bool   `xml:"make-default,omitempty"`
 			FailOnDuplicatePaymentMethod  bool   `xml:"fail-on-duplicate-payment-method,omitempty"`
 			VerificationMerchantAccountId string `xml:"verification-merchant-account-id,omitempty"`
@@ -48,7 +46,6 @@ func (cco *CreditCardOptions) MarshalXML(e *xml.Encoder, start xml.StartElement)
 		return e.EncodeElement(
 			includeVerifyCard{
 				VerifyCard:                    cco.VerifyCard,
-				VenmoSDKSession:               cco.VenmoSDKSession,
 				MakeDefault:                   cco.MakeDefault,
 				FailOnDuplicatePaymentMethod:  cco.FailOnDuplicatePaymentMethod,
 				VerificationMerchantAccountId: cco.VerificationMerchantAccountId,

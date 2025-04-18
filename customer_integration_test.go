@@ -1,3 +1,4 @@
+//go:build integration
 // +build integration
 
 package braintree
@@ -56,6 +57,9 @@ func TestCustomer(t *testing.T) {
 	}
 	if customer.Id == "" {
 		t.Fatal("invalid customer id")
+	}
+	if customer.GraphQLId == "" {
+		t.Fatal("invalid customer GraphQL id")
 	}
 	if card := customer.DefaultCreditCard(); card == nil {
 		t.Fatal("invalid credit card")

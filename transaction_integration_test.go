@@ -1,3 +1,4 @@
+//go:build integration
 // +build integration
 
 package braintree
@@ -40,6 +41,9 @@ func TestTransactionCreateSubmitForSettlementAndVoid(t *testing.T) {
 	}
 	if tx.Id == "" {
 		t.Fatal("Received invalid ID on new transaction")
+	}
+	if tx.GraphQLId == "" {
+		t.Fatal("Received invalid GraphQLId on new transaction")
 	}
 	if tx.Status != TransactionStatusAuthorized {
 		t.Fatal(tx.Status)

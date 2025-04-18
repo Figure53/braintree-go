@@ -50,6 +50,7 @@ const (
 type Transaction struct {
 	XMLName                      string                    `xml:"transaction"`
 	Id                           string                    `xml:"id"`
+	GraphQLId                    string                    `xml:"global-id"`
 	Status                       TransactionStatus         `xml:"status"`
 	Type                         string                    `xml:"type"`
 	CurrencyISOCode              string                    `xml:"currency-iso-code"`

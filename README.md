@@ -87,7 +87,7 @@ import (
   "testing"
   "net/http/httptest"
 
-  "github.com/braintree-go/braintree-go"
+  "github.com/Figure53/braintree-go"
 )
 
 func TestMyWebhook(t *testing.T) {

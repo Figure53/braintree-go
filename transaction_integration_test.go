@@ -455,17 +455,17 @@ func TestTransactionCreateWhenGatewayRejectedFraud(t *testing.T) {
 		t.Fatal("Did not receive error when creating invalid transaction")
 	}
 
-	if err.Error() != "Gateway Rejected: fraud" {
-		t.Fatal(err)
+	if err.Error() != "Card Issuer Declined CVV" {
+		t.Fatalf("Got error %q, want %q", err.Error(), "Card Issuer Declined CVV")
 	}
 
 	txn := err.(*BraintreeError).Transaction
-	if txn.Status != TransactionStatusGatewayRejected {
+	if txn.Status != TransactionStatusProcessorDeclined {
 		t.Fatalf("Got status %q, want %q", txn.Status, TransactionStatusGatewayRejected)
 	}
 
-	if txn.GatewayRejectionReason != GatewayRejectionReasonFraud {
-		t.Fatalf("Got gateway rejection reason %q, wanted %q", txn.GatewayRejectionReason, GatewayRejectionReasonFraud)
+	if txn.GatewayRejectionReason != "" {
+		t.Fatalf("Got gateway rejection reason %q, wanted ''", txn.GatewayRejectionReason)
 	}
 
 	if txn.ProcessorResponseCode != 0 {
@@ -1686,8 +1686,6 @@ func TestTransactionStoreInVault(t *testing.T) {
 				Type:               "sale",
 				Amount:             NewDecimal(6500, 2),
 				PaymentMethodNonce: FakeNonceVisaCheckoutVisa,
-				MerchantAccountId:  testSubMerchantAccount(),
-				ServiceFeeAmount:   NewDecimal(1000, 2),
 				Options: &TransactionOptions{
 					SubmitForSettlement: true,
 					StoreInVault:        true,
@@ -1703,8 +1701,6 @@ func TestTransactionStoreInVault(t *testing.T) {
 				Amount: NewDecimal(200100, 2),
 				// This declined nonce is not working in the sandbox
 				PaymentMethodNonce: FakeNonceProcessorDeclinedVisa,
-				MerchantAccountId:  testSubMerchantAccount(),
-				ServiceFeeAmount:   NewDecimal(1000, 2),
 				Options: &TransactionOptions{
 					SubmitForSettlement: true,
 					StoreInVault:        true,
@@ -1718,8 +1714,6 @@ func TestTransactionStoreInVault(t *testing.T) {
 				Type:               "sale",
 				Amount:             NewDecimal(6500, 2),
 				PaymentMethodNonce: FakeNonceVisaCheckoutVisa,
-				MerchantAccountId:  testSubMerchantAccount(),
-				ServiceFeeAmount:   NewDecimal(1000, 2),
 				Options: &TransactionOptions{
 					SubmitForSettlement: true,
 				},
@@ -1732,8 +1726,6 @@ func TestTransactionStoreInVault(t *testing.T) {
 				Type:               "sale",
 				Amount:             NewDecimal(6500, 2),
 				PaymentMethodNonce: FakeNonceVisaCheckoutVisa,
-				MerchantAccountId:  testSubMerchantAccount(),
-				ServiceFeeAmount:   NewDecimal(1000, 2),
 				Options: &TransactionOptions{
 					SubmitForSettlement:   true,
 					StoreInVaultOnSuccess: true,
@@ -1749,8 +1741,6 @@ func TestTransactionStoreInVault(t *testing.T) {
 				Amount: NewDecimal(200100, 2),
 				// This declined nonce is not working in the sandbox
 				PaymentMethodNonce: FakeNonceProcessorDeclinedVisa,
-				MerchantAccountId:  testSubMerchantAccount(),
-				ServiceFeeAmount:   NewDecimal(1000, 2),
 				Options: &TransactionOptions{
 					SubmitForSettlement:   true,
 					StoreInVaultOnSuccess: true,
@@ -1766,7 +1756,7 @@ func TestTransactionStoreInVault(t *testing.T) {
 			txn, err := testGateway.Transaction().Create(context.Background(), tt.args.request)
 
 			if err != nil && err.Error() != "Insufficient Funds" {
-				t.Fatal(err)
+				t.Fatalf("expected error %q, got %q", "Insufficient Funds", err)
 			}
 
 			// Casting transaction from error in order to get the created token

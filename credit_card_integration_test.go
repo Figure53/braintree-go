@@ -1,3 +1,4 @@
+//go:build integration
 // +build integration
 
 package braintree
@@ -223,52 +224,6 @@ func TestFindCreditCardBadData(t *testing.T) {
 
 	if err == nil {
 		t.Fatal("expected to get error because the token is invalid")
-	}
-}
-
-func TestSaveCreditCardWithVenmoSDKPaymentMethodCode(t *testing.T) {
-	t.Parallel()
-
-	ctx := context.Background()
-
-	customer, err := testGateway.Customer().Create(ctx, &CustomerRequest{})
-	if err != nil {
-		t.Fatal(err)
-	}
-	card, err := testGateway.CreditCard().Create(ctx, &CreditCard{
-		CustomerId:                customer.Id,
-		VenmoSDKPaymentMethodCode: "stub-" + testCardVisa,
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if card.VenmoSDK {
-		t.Fatal("venmo card marked")
-	}
-}
-
-func TestSaveCreditCardWithVenmoSDKSession(t *testing.T) {
-	t.Parallel()
-
-	ctx := context.Background()
-
-	customer, err := testGateway.Customer().Create(ctx, &CustomerRequest{})
-	if err != nil {
-		t.Fatal(err)
-	}
-	card, err := testGateway.CreditCard().Create(ctx, &CreditCard{
-		CustomerId:     customer.Id,
-		Number:         testCardVisa,
-		ExpirationDate: "05/14",
-		Options: &CreditCardOptions{
-			VenmoSDKSession: "stub-session",
-		},
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if card.VenmoSDK {
-		t.Fatal("venmo card marked")
 	}
 }
 

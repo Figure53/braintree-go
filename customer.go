@@ -1,13 +1,15 @@
 package braintree
 
 import (
-	"github.com/braintree-go/braintree-go/customfields"
 	"time"
+
+	"github.com/braintree-go/braintree-go/customfields"
 )
 
 type Customer struct {
 	XMLName            string                    `xml:"customer"`
 	Id                 string                    `xml:"id"`
+	GraphQLId          string                    `xml:"global-id"`
 	FirstName          string                    `xml:"first-name"`
 	LastName           string                    `xml:"last-name"`
 	Company            string                    `xml:"company"`

@@ -1,3 +1,4 @@
+//go:build integration
 // +build integration
 
 package braintree
@@ -25,6 +26,7 @@ func TestMerchantAccountCreate(t *testing.T) {
 			Email:       "kayle.gishen@example.com",
 			Phone:       "5556789012",
 			DateOfBirth: "1-1-1989",
+			SSN:         "0000000000",
 			Address: &Address{
 				StreetAddress:   "1 E Main St",
 				ExtendedAddress: "Suite 404",

@@ -1,3 +1,4 @@
+//go:build integration
 // +build integration
 
 package braintree
@@ -1423,7 +1424,7 @@ func TestTransactionWithLineItemsValidationErrorTotalAmountMustBeGreaterThanZero
 	if g, w := validationErrors[0].Attribute, "TotalAmount"; g != w {
 		t.Errorf("got error attribute %q, want %q", g, w)
 	}
-	if g, w := validationErrors[0].Message, "Total amount must be greater than zero."; g != w {
+	if g, w := validationErrors[0].Message, "Total amount must be greater than zero. Zero is allowed for PayPal transactions."; g != w {
 		t.Errorf("got error message %q, want %q", g, w)
 	}
 }
@@ -1623,7 +1624,7 @@ func TestTransactionWithLineItemsValidationErrorUnitAmountMustBeGreaterThanZero(
 	if g, w := validationErrors[0].Attribute, "UnitAmount"; g != w {
 		t.Errorf("got error attribute %q, want %q", g, w)
 	}
-	if g, w := validationErrors[0].Message, "Unit amount must be greater than zero."; g != w {
+	if g, w := validationErrors[0].Message, "Unit amount must be greater than zero. Zero is allowed for PayPal transactions."; g != w {
 		t.Errorf("got error message %q, want %q", g, w)
 	}
 }

@@ -56,7 +56,7 @@ func testSubMerchantAccount() string {
 			Email:       "firstlast@example.com",
 			Phone:       "0000000000",
 			DateOfBirth: "1-1-1900",
-			SSN:         "0000000000",
+			SSN:         "000000000",
 			Address: &Address{
 				StreetAddress:   "222 W Merchandise Mart Plaza",
 				ExtendedAddress: "Suite 800",
